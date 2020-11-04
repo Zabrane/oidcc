@@ -134,7 +134,7 @@ uncompress_body_if_needed(_Body, {_, Compression})  ->
     erlang:error({unsupported_encoding, Compression}).
 
 options(Url) when is_list(Url) ->
-    {ok, {Schema, _, HostName, _, _,  _}} = http_uri:parse(normalize(Url)),
+    {ok, {Schema, _, HostName, _, _,  _}} = uri_string:parse(normalize(Url)),
     BaseOptions = [{timeout, request_timeout(ms)} ],
      case Schema of
         http -> {ok, BaseOptions};
@@ -192,7 +192,7 @@ ssl_verify_fun(Hostname) ->
                 Valid = case lists:foldl(Compare, CrtList, BinHostList) of
                             [] -> true;
                             Other -> Other
-                        end,
+                        end == true,
                 case Valid and LongEnough of
                     true -> true;
                     _ -> CurValid
